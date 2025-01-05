@@ -1,0 +1,78 @@
+= Formula 1 Race & Strategy Simulator
+
+image:https://mukundkk.semaphoreci.com/badges/F1StrategySimulator/branches/master.svg?key=2f3214d0-9d7a-411b-a73b-771bb2d58d49[https://mukundkk.semaphoreci.com/badges/F1StrategySimulator/branches/master.svg?key=2f3214d0-9d7a-411b-a73b-771bb2d58d49]
+
+'''
+
+== Introduction
+
+This project aims to simulate the outcome of Formula One races using open-source data from the http://ergast.com/mrd/[Ergast Motor Racing Developer API]. As of now, it is focused on the 2016 F1 season, but more seasons may be added at a later date.
+
+== Getting Started
+
+=== Prerequisites
+Java 11 or later is required for this project.
+
+=== Running the Simulator
+
+. Download and uncompress the newest release
+. Enter the directory ~/F1StrategySimulator
+. Run ```java -jar /build/libs/F1StrategySimulator.jar``` to start the program
+
+If you prefer to work on the source code as well, you can:
+
+. Clone this repository
+. Enter the parent directory ~/F1StrategySimulator
+. Run a Gradle build
+* ```./gradlew build```
+. Run the generated JAR file as needed
+* ```java -jar /build/libs/F1StrategySimulator.jar```
+
+== Features
+The overall simulator consists of multiple 'models' that predict behavior in certain important subcategories, such as tyre wear and overtakes.
+
+.Core Models
+* Tyre Wear
+* Fuel Consumption
+* Overtaking
+* Pit Stop/Tyre Strategy
+* DNFs
+
+The results from each of these models are then taken into account and used to predict lap-by-lap results, and eventually the results of the simulated race.
+
+As much of the real-time data collected by Formula One teams is not publically available, these models are limited to and by the open-source data that can be found.
+
+More features will be added in the future - check out <<What Next?>>
+
+== Project Layout
+
+.A description of each relevant directory in ~/src.
+|===
+|~/src/ |Description
+
+|Data
+|Collection of various data incl. driver coefficients, team statistics, and circuit information.
+
+|Evaluation
+|Contains the main class from which the program is entered.
+
+|FileIO
+|Classes for reading from and writing to race data files.
+
+|Models
+|The core of the project – all models that are used in the simulation.
+
+|Util
+|Miscellaneous utility classes.
+|===
+
+== What Next?
+
+.Planned Features:
+* Add data for more seasons (post-2016)
+* Dedicated logic to account for increased chance of DNFs and overtaking during the 1st lap
+* Add more team-level customization (e.g. stronger/weaker circuits, reliability, etc.)
+
+== Contact
+
+mukund.krishnakumar@gmail.com
