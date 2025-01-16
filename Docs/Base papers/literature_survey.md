@@ -33,3 +33,19 @@ It utilizes two separate neural networks, one for predicting the driver's rank a
 The model incorporates data preprocessing techniques, including data imputations and filtering to eliminate outliers and irrelevant data.
 
 Hyperparameters for the model are carefully selected, and performance is evaluated using metrics such as RMSE, R², precision, recall, and F1 score.
+
+The first Embedded Deep Neural Network (EDNN) model demonstrated an RMSE of 2.51 on the training dataset and 2.05 on the test dataset, with R2 scores of 0.42 and 0.39, respectively.
+
+The model's predictions showed a 93% correlation with actual driver ranks.
+
+Dataset:
+
+The dataset used in the study spans from 2015 to 2022 and is compiled from multiple resources.
+
+It includes data for 258 races, encompassing a total of 169,525 laps.
+
+Key race metrics such as race lap times, qualifying lap times, starting positions, pole positions, and pitstop durations were obtained from the Ergast API.
+
+The dataset also records the number of accidents and failures per driver and season from an online motorsport statistics site.
+
+Notably, the dataset reflects a data imbalance, with only 3.07% of laps involving a pitstop.
