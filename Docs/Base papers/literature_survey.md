@@ -1,12 +1,10 @@
 # Literature Survey
 
-```markdown
 | No. | Title                          | Author(s)         | Year | Summary                                      |
 |-----|--------------------------------|-------------------|------|----------------------------------------------|
 | 1   | Deep-Racing: An Embedded Deep Neural Network (EDNN) Model to Predict the Winning Strategy in Formula One Racing | Fatima, Syeda Sitara Wishal, and Jennifer Johrendt | 2023 | The paper introduces Deep-Racing, an EDNN model designed to predict driver rankings and optimal pitstop strategies in Formula One racing. |
 | 2   | Example Paper Title 2          | Author C, Author D| 2022 | Brief summary of the paper                   |
 | 3   | Example Paper Title 3          | Author E, Author F| 2021 | Brief summary of the paper                   |
-```
 
 ## Paper 1
 
