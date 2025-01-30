@@ -38,6 +38,7 @@ Author -- veersagar
     The model's predictions showed a 93% correlation with actual driver ranks.
 
 - **Dataset:**
+
     The dataset (<https://github.com/TUMFTM/f1-timing-database>) used in the study spans from 2015 to 2022 and is compiled from multiple resources.
 
     It includes data for 258 races, encompassing a total of 169,525 laps.
