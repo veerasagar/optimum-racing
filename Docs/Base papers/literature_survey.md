@@ -8,8 +8,6 @@
 
 ## Paper 1
 
-Author -- veersagar
-
 ## Title:  Deep-Racing: An Embedded Deep Neural Network (EDNN) Model to Predict the Winning Strategy in Formula One Racing
 
 - **cite:**
@@ -102,3 +100,29 @@ Author -- veersagar
 
 - **Results:**
     The simulation accurately predicts race outcomes, including the effects of tire degradation, fuel consumption, and pit stops.It demonstrates the ability to support race engineers in pre-race strategy planning and real-time strategy adjustments during races.
+
+## Paper 4
+
+## Title: AI-enabled prediction of sim racing performance using telemetry data
+
+- **cite:** Fazilat Hojaji, Adam J. Toth, John M. Joyce, Mark J. Campbell,
+AI-enabled prediction of sim racing performance using telemetry data,
+Computers in Human Behavior Reports,Volume 14,2024,100414,ISSN 2451-9588, <https://doi.org/10.1016/j.chbr.2024.100414>.
+- **Summary:** The paper explores the application of data science and machine learning (ML) techniques to analyze and predict performance in sim racing, a rapidly growing segment of esports. The study focuses on identifying key in-game metrics that influence driving performance and provides insights into how these metrics can be used to improve training and performance in sim racing.
+- **Applications:**
+
+  - Training Tools: The identified metrics can be used to develop targeted training programs for sim racers.
+
+  - Game Development: Insights from the study can help game developers enhance the realism and accuracy of racing simulators.
+
+  - Strategy Development: Teams can use the findings to develop better racing strategies and optimize vehicle setups.
+
+- **Results:**
+
+  - Key Performance Metrics: The XGBoost model achieved the highest prediction accuracy (97.19%) and identified speed, lateral acceleration, and steering angle as the most influential metrics.
+
+  - Driving Patterns: FAST laps were characterized by higher throttle application, more efficient braking, and smoother steering control compared to SLOW laps.
+
+  - Track Difficulty: The analysis revealed that certain corners, particularly T2, were more challenging and had a significant impact on overall lap performance.
+- **Future Research:**
+    The study suggests expanding the analysis to other tracks and exploring additional ML techniques for trajectory prediction and driver behavior modeling. The methodology could also be applied to real-world driving scenarios, including autonomous vehicles. Overall, the paper demonstrates the potential of AI and ML in esports analytics, particularly in sim racing, and provides a framework for future research in this area.
