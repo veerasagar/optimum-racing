@@ -76,8 +76,29 @@ Author -- veersagar
 
 ## Paper 3
 
-## Title
+## Title: A Race Simulation for Strategy Decisions in Circuit Motorsports
 
-- **cite:**
-- **Summary:**
-- **Dataset:**
+- **cite:** Alexander Heilmeier, Michael Graf, and Markus Lienkarnp. 2018. A Race Simulation for Strategy Decisions in Circuit Motorsports. In 2018 21st International Conference on Intelligent Transportation Systems (ITSC). IEEE Press, 2986–2993. <https://doi.org/10.1109/ITSC.2018.8570012>
+- **Summary:** This paper presents a race simulation tool designed to support strategy decisions in circuit motorsports, particularly in Formula 1. The simulation focuses on evaluating race strategies by modeling key factors such as tire degradation, fuel mass loss, pit stops, and overtaking maneuvers. The tool is based on a lap-wise discretization approach, which allows for quick and efficient simulation of entire races using publicly accessible lap time data.
+- **Key Contributions:**
+
+  - Race Simulation Framework:
+    The simulation models the entire race, including long-term effects like tire wear and fuel consumption, as well as race events such as pit stops and overtaking. It uses empirical models to keep computational effort low, making it suitable for real-time strategy adjustments during races.
+
+  - Lap-Wise Discretization:
+    The race is simulated lap by lap, with each lap time calculated based on a base lap time (derived from qualifying or practice sessions) and adjusted for factors like tire degradation, fuel mass, and pit stops.This approach simplifies the simulation by avoiding the need for detailed track modeling or individual racing lines.
+
+  - Tire Degradation Model:
+    The simulation includes a logarithmic tire degradation model that accounts for the performance drop of tires over time. Different tire compounds (e.g., Ultrasoft, Supersoft) are modeled individually, with parameters adjusted for each driver or team.
+
+  - Fuel Mass and Pit Stop Modeling:
+    Fuel consumption is modeled linearly, with lap times increasing as fuel mass decreases.Pit stops are simulated with time penalties for inlaps and outlaps, and the simulation accounts for the dynamic standing times in Formula 1 (e.g., tire changes, penalties).
+
+  - Overtaking Model:
+    Overtaking is modeled based on time gaps between cars and the use of DRS (Drag Reduction System). The simulation includes a team order matrix to account for team strategies (e.g., favoring one driver over another).
+
+  - Validation with Real Data:
+    The simulation is validated using data from the 2017 Abu Dhabi Grand Prix. The results show a good match between simulated and actual race times, with deviations typically within 0.47 seconds on average.
+
+- **Results:**
+    The simulation accurately predicts race outcomes, including the effects of tire degradation, fuel consumption, and pit stops.It demonstrates the ability to support race engineers in pre-race strategy planning and real-time strategy adjustments during races.
