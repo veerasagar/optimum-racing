@@ -51,7 +51,30 @@ Author -- veersagar
 
 ## Paper 2
 
-Author
+## Title: Mastering Nordschleife - A comprehensive race simulation for AI strategy decision-making in motorsports
+
+- **cite:** Boettinger, Max, and David Klotz. "Mastering Nordschleife--A comprehensive race simulation for AI strategy decision-making in motorsports." arXiv preprint arXiv:2306.16088 (2023).
+- **Summary:** This paper presents a novel reinforcement learning (RL)-based approach to optimize race strategy decisions in GT motorsports, specifically for the Nürburgring Nordschleife circuit. The study addresses limitations in existing race simulations, which often require manual input and focus on F1 regulations, by developing a GT-specific model tailored to the Nürburgring Langstrecken Serie (NLS).
+- **Objective:**
+    Automate pit-stop and refueling decisions using RL, balancing fuel consumption, tire degradation, and time penalties.
+
+    Create a realistic simulation environment for GT racing, incorporating sector-wise track discretization, probabilistic events (e.g., accidents, traffic), and NLS-specific rules like dynamic pit-stop standing times.
+
+- **Methodology:**
+    Simulation Design: Models a 4-hour NLS race (25 laps) with sector-based time adjustments for fuel, tire wear, and traffic. Historical 2020 NLS data validates parameters like tire degradation (logarithmic model) and fuel consumption (linear model).
+
+    Reinforcement Learning: Implements a Deep Q-Network (DQN) with an action space (pit-stop refuel amounts) and observation space (fuel level, race position). Reward functions penalize high tire degradation and reward competitive positions.
+
+    Hyperparameter Tuning: Evaluates learning rates, replay buffers, and episode counts, settling on 100,000 episodes for stable training.
+
+- **Conclusion:**
+    The simulation accurately replicates GT race dynamics, demonstrating RL’s potential for strategic automation. Challenges included sparse data for probabilistic events (e.g., multi-class traffic).
+
+    Future work could explore self-play for robust policies and enhanced probabilistic modeling.
+
+    This research bridges a gap in motorsport AI applications, offering tools for real-time decision-making in endurance racing beyond F1.
+
+## Paper 3
 
 ## Title
 
