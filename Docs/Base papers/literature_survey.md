@@ -158,6 +158,19 @@ Computers in Human Behavior Reports,Volume 14,2024,100414,ISSN 2451-9588, <https
   - Modeling of Safety Cars: A "safety car ghost" (SCG) concept is proposed to realistically model the impact of safety cars on individual drivers, despite the lap-wise discretization of the simulation.
 - **Conclusion:** The authors demonstrate the effectiveness of their approach through Monte Carlo simulations, showing that their model accurately captures the impact of probabilistic effects on race outcomes. They highlight the benefits of using Monte Carlo simulations for evaluating the robustness of different race strategies against unforeseen events.
 
+## Paper 8
+
+## Title: Bayesian analysis of Formula One race results: disentangling driver skill and constructor advantage
+
+- **cite:** van Kesteren, Erik-Jan, and Tom Bergkamp. "Bayesian analysis of Formula One race results: disentangling driver skill and constructor advantage." Journal of quantitative analysis in sports 19.4 (2023): 273-293.
+- **Year:** 2023
+- **Summary:** This research paper investigates the relative contributions of driver skill and constructor advantage to success in Formula One racing. Using a novel Bayesian multilevel rank-ordered logit regression model, the authors analyze race finishing positions from the hybrid era (2014-2021).
+- **Key Points:**
+  - Driver Skill: Hamilton and Verstappen are identified as the most skilled drivers in the hybrid era.
+  - Constructor Advantage: The top three teams (Mercedes, Ferrari, and Red Bull) consistently outperform other constructors.
+  - Relative Importance: The model estimates that approximately 88% of the variance in race results is explained by the constructor, indicating that the car is more important than the driver in determining success.
+- **Conclusion:** The approach has potential applications in other sports where multiple independent components contribute to success. The model provides a framework for quantifying and comparing driver skill and constructor advantage in Formula One.
+
 ## Paper 6
 
 ## Title:
