@@ -143,6 +143,21 @@ Computers in Human Behavior Reports,Volume 14,2024,100414,ISSN 2451-9588, <https
   - Challenges and Future Directions: The paper discusses key challenges faced by practitioners and researchers, including handling non-stationarity, uncertainty quantification, and ethical considerations. It also outlines potential avenues for future research, such as developing hybrid models, integrating external data, and advancing explainable deep learning.
 - **Conclusion:** The paper concludes that time series analysis and forecasting are essential tools for informed decision-making across various sectors. It provides a valuable resource for practitioners and researchers seeking to understand the nuances of different forecasting techniques and navigate the evolving landscape of this dynamic field.
 
+## Paper 7
+
+## Title: Application of Monte Carlo Methods to Consider Probabilistic Effects in a Race Simulation for Circuit Motorsport
+
+- **cite:** Heilmeier, A.; Graf, M.; Betz, J.; Lienkamp, M. Application of Monte Carlo Methods to Consider Probabilistic Effects in a Race Simulation for Circuit Motorsport. Appl. Sci. 2020, 10, 4229. <https://doi.org/10.3390/app10124229>
+- **Year:** 2020
+- **Summary:** This paper presents a novel approach to modeling probabilistic effects in a race simulation for circuit motorsport, specifically focusing on Formula 1. The authors argue that traditional race simulations often fail to account for the significant impact of random events, such as accidents, safety car phases, and driver variability, which can drastically alter race outcomes.
+- **Key Points:**
+  - Modeling of Starting Performance: A driver-specific Gaussian distribution is used to model the variability in starting performance, based on a reference curve derived from real race data.
+  - Modeling of Variability of Lap Time and Pit Stop Duration: Existing models for lap time and pit stop duration variability are adapted and parameterized using a larger database.
+  - Determination of Accident and Failure Probabilities: Bayesian inference is employed to determine driver-specific accident probabilities and team-specific failure probabilities, taking into account historical data.
+  - Determination of Full Course Yellow Phases: A novel approach is introduced to determine the quantity, start time, and duration of full course yellow (FCY) phases, considering their relationship with accidents and failures.
+  - Modeling of Safety Cars: A "safety car ghost" (SCG) concept is proposed to realistically model the impact of safety cars on individual drivers, despite the lap-wise discretization of the simulation.
+- **Conclusion:** The authors demonstrate the effectiveness of their approach through Monte Carlo simulations, showing that their model accurately captures the impact of probabilistic effects on race outcomes. They highlight the benefits of using Monte Carlo simulations for evaluating the robustness of different race strategies against unforeseen events.
+
 ## Paper 6
 
 ## Title:
