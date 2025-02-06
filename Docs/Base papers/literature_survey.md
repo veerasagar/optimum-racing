@@ -263,16 +263,50 @@ The authors propose RankNet, a novel deep learning model that effectively tackle
 
 ## Paper 14
 
-## Title:
+## Title: Time Series Analysis and Modeling to Forecast: a Survey
 
-- **cite:**
-- **Year:**
-- **Summary:**
+- **cite:** Dama, Fatoumata, and Christine Sinoquet. "Time series analysis and modeling to forecast: A survey." arXiv preprint arXiv:2104.00164 (2021).
+- **Year:** 2021
+- **Summary:** This survey provides a comprehensive overview of time series modeling and forecasting techniques, focusing on parametric models for predictive purposes. It covers a broad spectrum of models, from traditional linear models to more recent deep learning approaches.
 - **Key Points:**
-- **Conclusion:**
-- **Future Research:**
+  Stationarity: A key concept in time series analysis, stationarity refers to the time-independence of a process's statistical properties. The survey discusses different types of stationarity (strong and weak) and methods for testing stationarity.
+  Time Series Decomposition: Nonstationary time series are often decomposed into deterministic components (trend and seasonality) and a remaining stochastic component. The survey presents various decomposition schemes (additive, multiplicative, and mixed) and describes popular models for each scheme.
+  Linear Models: The survey covers three major linear models: autoregressive (AR), moving average (MA), and autoregressive moving average (ARMA). It explains their autocorrelation function structures, parameter learning algorithms, and forecasting procedures.
+  Nonlinear Models: The survey explores five categories of nonlinear models: polynomial autoregressive (PAR), functional-coefficient autoregressive (FAR), Markov switching autoregressive (MSAR), smooth transition autoregressive (STAR), and autoregressive conditional heteroscedasticity (ARCH).
+  Deep Learning: The survey highlights the growing importance of deep learning in time series forecasting. It discusses various deep neural network architectures, including Multilayer Perceptrons (MLPs), Recurrent Neural Networks (RNNs), Long Short-Term Memory networks (LSTMs), Convolutional Neural Networks (CNNs), and Transformers.
+- **Conclusion:** This is the first comprehensive survey dedicated to forecasting in time series, covering the entire process flow from decomposition to forecasting.
+It offers a unified presentation of decomposition frameworks, linear and nonlinear time series models, and the relationships between stationarity and linearity.
+It provides in-depth knowledge while covering a broad range of models and forecasting methods, spanning from conventional approaches to recent deep learning adaptations.
+It identifies new avenues for future research in time series modeling and forecasting.
+- **Future Research:** Further exploration of deep learning models for time series forecasting, including the development of new architectures and techniques.
+Investigation of multivariate time series forecasting, both point forecasting and probabilistic forecasting, to leverage dependencies across multiple variables.
+Enhancement of conventional time series models through the integration of general machine learning techniques, such as ensemble-based strategies, penalized regression, and clustering.
+Development of advanced bivariate process models that capture both short-term and long-term dependencies, incorporating event traces and actions triggered by human beings.
+Addressing the issue of data obsolescence in time series modeling and forecasting.
 
 ## Paper 15
+
+## Title: Time series forecasting model for non-stationary series pattern extraction using deep learning and GARCH modeling
+
+- **cite:** Han, Huimin & Liu, Zehua & Barrios, Mauricio & Li, Jiuhao & Zeng, Zhixiong & Sarhan, Nadia & Awwad, Emad. (2024). Time series forecasting model for non-stationary series pattern extraction using deep learning and GARCH modeling. Journal of Cloud Computing. 13. 10.1186/s13677-023-00576-7.
+- **Year:** 2024
+- **Summary:** This paper proposes a novel time series forecasting model that combines signal decomposition and deep learning techniques to address the challenges of non-linear and non-stationary time series data. The model utilizes the Generalized Autoregressive Conditional Heteroskedasticity (GARCH) model to learn the volatility in time series changes, followed by Complete Ensemble Empirical Mode Decomposition with Adaptive Noise (CEEMDAN) for data decomposition. Finally, Graph Convolutional Networks (GCN) are applied to learn the features of the decomposed data.
+- **Key Points:** The model is evaluated on three datasets: Air Quality, Energy, and Traffic. The results demonstrate that the proposed model outperforms traditional methods, particularly on the Energy and Traffic datasets. The model's strengths lie in its ability to capture dynamic volatility, reduce data complexity through decomposition, and effectively learn data relationships using GCN.
+- **Conclusion:** The paper highlights the potential of this hybrid model for applications in various fields, including finance, energy, and retail, where accurate forecasting of non-stationary time series data is crucial. However, the model's complexity, computational demands, and potential for overfitting are acknowledged as limitations. Future research should focus on enhancing interpretability, reducing computational overhead, and exploring adaptability to different types of non-stationary data.
+
+## Paper 16
+
+## Title: Virtual Strategy Engineer: Using Artificial Neural Networks for Making Race Strategy Decisions in Circuit Motorsport
+
+- **cite:** Heilmeier, A.; Thomaser, A.; Graf, M.; Betz, J. Virtual Strategy Engineer: Using Artificial Neural Networks for Making Race Strategy Decisions in Circuit Motorsport. Appl. Sci. 2020, 10, 7805. <https://doi.org/10.3390/app10217805>
+- **Year:** 2020
+- **Summary:** This paper presents a methodology for automating race strategy decisions in circuit motorsport, specifically focusing on Formula 1. The authors propose a Virtual Strategy Engineer (VSE) based on two artificial neural networks (NNs) to determine pit stop timing and tire compound selection.
+- **Key Points:** Performance Evaluation: The VSE demonstrates reasonable decision-making, adapting to race situations like FCY phases and undercut attempts.
+Feature Impact Analysis: The authors analyze the influence of individual features on the VSE's predictions, highlighting the importance of factors like tire age, FCY status, and remaining pit stops.
+Comparison with Real-World Strategies: The VSE's performance is compared to real-world race strategies, showing potential for improving race outcomes.
+- **Conclusion:** The VSE demonstrates the potential of artificial intelligence for automating race strategy decisions in circuit motorsport. Its ability to learn from real-world data and adapt to dynamic race situations makes it a valuable tool for improving race simulation realism and supporting real strategy engineers.
+
+## Paper 17
 
 ## Title:
 
