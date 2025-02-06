@@ -230,14 +230,17 @@ Utilizing the model for player performance assessment and training.
 
 ## Paper 12
 
-## Title:
+## Title: Planning Formula One race strategies using discrete-event simulation
 
-- **cite:**
-- **Year:**
-- **Summary:**
+- **cite:** Bekker, James & Lotz, W. (2009). Planning Formula One race strategies using discrete-event simulation. Journal of the Operational Research Society. 60. 10.1057/palgrave.jors.2602626.
+- **Year:** 2009
+- **Summary:** This paper presents a discrete-event simulation model designed to assist Formula One racing teams in planning and evaluating their race strategies. The model simulates key on-track events, including car failures, passing maneuvers, and pit stops, to provide teams with a potential competitive advantage.
 - **Key Points:**
-- **Conclusion:**
-- **Future Research:**
+  - Time-based approach: The model captures the mechanical complexities and physical interactions of a race car with its environment through a time-based approach, where all effects are translated into a net time for a car to travel between points on the track.
+  - Passing maneuvers: The model simulates passing maneuvers based on the relative pace and position of cars, allowing for realistic overtaking scenarios.
+  - Pit stops: The model incorporates pit stops, including the time required to travel down the pit lane and the operational delay time associated with refueling, tire changes, and other pit stop activities.
+- **Conclusion:** The paper demonstrates the model's application by evaluating the race strategies employed by a specific team during the three validated races. The results suggest that the team could have achieved better results with different pit-stop strategies. The model can be used to plan strategies for future events by simulating various scenarios and identifying the most advantageous options.
+- **Future Research:** Future work includes refining the model to incorporate changing weather conditions and the effects of major accidents. The ultimate goal is to develop a real-time model that can analyze race strategies and provide decision-makers with immediate insights to react to racing incidents.
 
 ## Paper 13
 
