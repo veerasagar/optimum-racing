@@ -191,6 +191,20 @@ Incorporating data from other drivers and races to improve prediction accuracy.
 Developing a more comprehensive system that includes external factors for more realistic predictions.
 Utilizing the model for player performance assessment and training.
 
+## Paper 10
+
+## Title: Evolutionary F1 Race Strategy
+
+- **cite:** Andrea Bonomi, Evelyn Turri, and Giovanni Iacca. 2023. Evolutionary F1 Race Strategy. In Proceedings of the Companion Conference on Genetic and Evolutionary Computation (GECCO '23 Companion). Association for Computing Machinery, New York, NY, USA, 1925–1932. <https://doi.org/10.1145/3583133.3596349>
+- **Year:** 2023
+- **Summary:** This paper proposes a custom Genetic Algorithm (GA) to optimize Formula 1 race strategies. The GA considers various factors affecting race performance, including tire choice, pit stops, fuel weight, and tire wear. It simulates multiple race strategies and provides valuable insights for informed strategic decisions.
+- **Key Points:**
+  - Individual Representation: Each race strategy is represented as an individual with a genotype containing tire compound, fuel load, and pit stop information.
+  - Fitness Function: The fitness value is the total race time, calculated by summing time losses due to tire compound, tire wear, fuel weight, pit stops, and weather conditions.
+  - Selection and Replacement: The selection process uses a dynamic penalty function to prioritize strategies that are close to optimal, even if they violate constraints slightly. Elitism is used to preserve the best individuals from the previous generation.
+  - Crossover: The crossover operation exchanges the initial fuel load between two strategies.
+  - Mutation: Four types of mutations are implemented: tire compound change, pit stop removal, pit stop addition, and fuel load adjustment.
+- **Conclusion:** The proposed GA demonstrates the effectiveness of Evolutionary Computation in optimizing F1 race strategies. Its speed and adaptability make it a valuable tool for real-time strategy analysis and decision-making.
 
 ## Paper 11
 
