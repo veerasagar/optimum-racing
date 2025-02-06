@@ -244,14 +244,22 @@ Utilizing the model for player performance assessment and training.
 
 ## Paper 13
 
-## Title:
+## Title: Rank position forecasting in car racing
 
-- **cite:**
-- **Year:**
-- **Summary:**
+- **cite:** Peng, Bo, et al. "Rank position forecasting in car racing." 2021 IEEE International Parallel and Distributed Processing Symposium (IPDPS). IEEE, 2021.
+- **Year:** 2021
+- **Summary:** This paper addresses the challenging problem of rank position forecasting in car racing, a domain characterized by high dynamics, uncertainty, and sparse data. Existing methods, including statistical models, machine learning regression models, and deep forecasting models, struggle to accurately predict rank positions due to the complex interplay of factors like driver skill, car configuration, racing strategies, and unpredictable events like crashes and mechanical failures.
+The authors propose RankNet, a novel deep learning model that effectively tackles these challenges. RankNet leverages a decomposition approach, separating the modeling of pit stop events from the modeling of rank position. This strategy allows for more accurate predictions by addressing the uncertainty inherent in pit stop decisions.
 - **Key Points:**
-- **Conclusion:**
-- **Future Research:**
+  - Cause-effect analysis of pit stops: The paper identifies and analyzes the factors influencing pit stops, including resource constraints, anomaly events, and race strategies.
+  - Model decomposition: RankNet decomposes the forecasting problem into two sub-models: a PitModel that predicts future race status (pit stops and caution laps) and a RankModel that forecasts rank positions based on the predicted race status.
+  - Deep learning model selection: The authors explore different deep learning models for the RankModel and find that models with weaker assumptions on global dependency structures perform best.
+  - Domain knowledge-based optimizations: RankNet incorporates domain knowledge through feature engineering and optimization techniques, significantly improving forecasting performance.
+  - Performance evaluation: RankNet demonstrates significant performance improvements over baselines, achieving more than 10% MAE improvement consistently.
+- **RankNet's architecture:**
+  - PitModel: A multilayer perceptron (MLP) network that predicts the lap number of the next pit stop.
+  - RankModel: A stacked LSTM encoder-decoder network that predicts rank positions based on historical rank data and predicted race status.
+- **Conclusion:** Overall, RankNet offers a promising solution for rank position forecasting in car racing, providing valuable insights for race analysis and strategy optimization.
 
 ## Paper 14
 
