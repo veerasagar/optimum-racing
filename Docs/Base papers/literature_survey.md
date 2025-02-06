@@ -171,7 +171,72 @@ Computers in Human Behavior Reports,Volume 14,2024,100414,ISSN 2451-9588, <https
   - Relative Importance: The model estimates that approximately 88% of the variance in race results is explained by the constructor, indicating that the car is more important than the driver in determining success.
 - **Conclusion:** The approach has potential applications in other sports where multiple independent components contribute to success. The model provides a framework for quantifying and comparing driver skill and constructor advantage in Formula One.
 
-## Paper 6
+## Paper 9
+
+## Title: Deep Neural Network-based lap time forecasting of Formula 1 Racing
+
+- **cite:** Zhao, Zhixuan. (2024). Deep Neural Network-based lap time forecasting of Formula 1 Racing. Applied and Computational Engineering. 47. 61-66. 10.54254/2755-2721/47/20241191.
+- **Year:** 2024
+- **Summary:** This paper proposes a Deep Neural Network (DNN) model for predicting the fastest lap time in Formula 1 qualifying sessions. The model leverages historical data from 2014 onwards, focusing on qualifying fastest lap times to minimize external factors.
+- **Key Points:**
+  - Data-Driven Approach: The DNN learns patterns from historical data to predict future performance, surpassing traditional methods like linear regression.
+  - Driver and Track Specificity: The model considers individual driver performance at each circuit, enabling more accurate predictions.
+  - Network Structure: A Fully Connected Neural Network (FCNN) with two hidden layers is employed, utilizing activation functions like PReLU and Tanh for efficient training.
+  - Loss Function and Optimizer: SmoothL1Loss and Adam optimizer are used for parameter updates, ensuring fast convergence and adaptability.
+- **Limitations:**
+  - The model cannot account for external factors like weather conditions or driver status.
+  - The Single Input Single Output (SISO) system limits the model's ability to consider complex interactions.
+- **Future Research:**
+Incorporating data from other drivers and races to improve prediction accuracy.
+Developing a more comprehensive system that includes external factors for more realistic predictions.
+Utilizing the model for player performance assessment and training.
+
+
+## Paper 11
+
+## Title:
+
+- **cite:**
+- **Year:**
+- **Summary:**
+- **Key Points:**
+- **Conclusion:**
+- **Future Research:**
+
+## Paper 12
+
+## Title:
+
+- **cite:**
+- **Year:**
+- **Summary:**
+- **Key Points:**
+- **Conclusion:**
+- **Future Research:**
+
+## Paper 13
+
+## Title:
+
+- **cite:**
+- **Year:**
+- **Summary:**
+- **Key Points:**
+- **Conclusion:**
+- **Future Research:**
+
+## Paper 14
+
+## Title:
+
+- **cite:**
+- **Year:**
+- **Summary:**
+- **Key Points:**
+- **Conclusion:**
+- **Future Research:**
+
+## Paper 15
 
 ## Title:
 
