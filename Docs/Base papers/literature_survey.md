@@ -208,14 +208,25 @@ Utilizing the model for player performance assessment and training.
 
 ## Paper 11
 
-## Title:
+## Title: Explainable Reinforcement Learning for Formula One Race Strategy
 
-- **cite:**
-- **Year:**
-- **Summary:**
+- **cite:** Thomas, Devin, et al. "Explainable Reinforcement Learning for Formula One Race Strategy." arXiv preprint arXiv:2501.04068 (2025).
+- **Year:** 2025
+- **Summary:** This paper introduces RSRL (Race Strategy Reinforcement Learning), a reinforcement learning model designed to optimize race strategies in Formula One simulations. RSRL outperforms both a fixed strategy baseline and the industry standard Monte Carlo-based race strategy model provided by Mercedes-AMG PETRONAS F1 Team.
 - **Key Points:**
-- **Conclusion:**
+  - Flexible and Portable Architecture: RSRL utilizes a flexible architecture that allows for training and deployment with different data sources, including live race data and simulations.
+  - Improved Performance: RSRL achieves an average finishing position of P5.33 in the 2023 Bahrain Grand Prix, outperforming the best baseline model by 0.28 positions.
+  - Generalisability Study: The paper demonstrates how RSRL can be trained to prioritize performance on specific tracks or across multiple tracks.
+  - Explainable AI (XAI) Techniques: RSRL incorporates three XAI techniques – TimeSHAP, VIPER, and decision tree counterfactuals – to provide explanations for its decisions, enhancing user trust and understanding.
+  - Real-World Applications: The paper provides illustrations that demonstrate how RSRL replicates real-world strategic decisions made by race strategists.
+- **Evaluation:**
+  - Model Performance: RSRL consistently outperforms baseline models in simulations, achieving a significant improvement in average finishing position.
+  - Generalisability: RSRL models trained on a larger number of tracks exhibit better generalisability but may sacrifice performance on specific tracks.
+  - Explanations: The XAI techniques employed in RSRL demonstrate high fidelity and comprehensibility, providing accurate and understandable explanations for the model's decisions.
 - **Future Research:**
+  - Cooperative Strategies: Exploring the use of RSRL to control multiple cars and develop cooperative strategies.
+  - Driver-Specific Strategies: Fine-tuning RSRL to suggest personalized strategies based on individual driver styles.
+  - Human-in-the-Loop Feedback: Incorporating human expertise into the training process to further improve RSRL's performance.
 
 ## Paper 12
 
