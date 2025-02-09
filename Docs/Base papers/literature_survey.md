@@ -308,6 +308,46 @@ Comparison with Real-World Strategies: The VSE's performance is compared to real
 
 ## Paper 17
 
+## Title: Online Planning for F1 Race Strategy Identification
+
+- **cite:** Piccinotti, D. I. E. G. O., et al. "„Online Planning for F1 Race Strategy Identification “." International Conference on Automated Planning and Scheduling (ICAPS). 2021.
+- **Year:** 2021
+- **Summary:** This paper investigates the use of online planning algorithms for identifying optimal race strategies in Formula 1 (F1). The authors model the race strategy problem as a Markov Decision Process (MDP) and propose an open-loop approach using Monte Carlo Tree Search (MCTS) with Temporal Difference (TD) updates.
+- **Key Points:**
+  - Open-Loop Planning: The authors employ an open-loop planning strategy to address the challenges of large continuous state spaces and stochastic transitions in the F1 environment. This approach simplifies the search tree by focusing on sequences of actions rather than state-action mappings.
+  - Q-Learning TD Updates: To mitigate the high variance of returns in the search tree, the authors incorporate Q-learning TD updates into the MCTS algorithm. This helps to improve the stability and accuracy of value estimates.
+  - Simulation Environment: The paper utilizes a modified version of a previously developed F1 race simulator to evaluate the proposed planning algorithms. The simulator incorporates probabilistic race events, driver performance models, and tire degradation factors.
+  - Experimental Results: The authors conduct experiments on a set of F1 races from 2015 to 2018, comparing the performance of their Q-learning OL UCT algorithm with other planning methods and baselines. The results demonstrate that the proposed approach can improve race times and final positions compared to real-world strategies.
+- **Conclusion:** The paper concludes that online planning algorithms can be a valuable tool for F1 strategists, providing real-time recommendations and potentially improving race outcomes.
+- **Future Research:**
+  - The performance of the planners is heavily influenced by the rollout policies used.
+  - The reward function used in the experiments focuses on minimizing race time, which may not fully capture the complexities of F1 strategy.
+  - Future work includes exploring the use of function approximators and multi-agent frameworks to enhance the planning capabilities.
+
+## Paper 18
+
+## Title:
+
+- **cite:**
+- **Year:**
+- **Summary:**
+- **Key Points:**
+- **Conclusion:**
+- **Future Research:**
+
+## Paper 19
+
+## Title:
+
+- **cite:**
+- **Year:**
+- **Summary:**
+- **Key Points:**
+- **Conclusion:**
+- **Future Research:**
+
+## Paper 20
+
 ## Title:
 
 - **cite:**
