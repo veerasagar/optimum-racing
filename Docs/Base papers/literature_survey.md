@@ -326,14 +326,33 @@ Comparison with Real-World Strategies: The VSE's performance is compared to real
 
 ## Paper 18
 
-## Title:
+## Title: On the Optimization of Pit Stop Strategies via Dynamic Programming
 
-- **cite:**
-- **Year:**
-- **Summary:**
+- **cite:** Heine, O.F.C., Thraves, C. On the optimization of pit stop strategies via dynamic programming. Cent Eur J Oper Res 31, 239–268 (2023). <https://doi.org/10.1007/s10100-022-00806-4>
+- **Year:** 2023
+- **Summary:** This paper presents two dynamic programming models for optimizing pit stop strategies in Formula 1 races: a deterministic model and a stochastic model.
+
+- **Deterministic Model:**
+  - This model assumes no uncertain events and focuses on minimizing race time by optimizing tire compound choices and pit stop timing.
+  - The model considers factors like tire wear, fuel consumption, and lap time variations based on tire compound and wear.
+  - The model is solved using a Bellman equation and a border condition that ensures the car uses at least two different tire compounds during the race.
+  - The model can be adapted to incorporate yellow flag events by re-solving the dynamic program from the lap where the yellow flag occurs.
+
+- **Stochastic Model:**
+  - This model extends the deterministic model by incorporating uncertainty in the form of weather changes and yellow flag events.
+  - The model considers the probability of yellow flag occurrences and their duration, as well as the probability of weather transitions.
+  - The model is solved using a Bellman equation and a border condition that accounts for the possibility of using wet tires, which suspends the requirement of using at least two different tire compounds.
+  - The model demonstrates that delaying pit stops to potentially benefit from a yellow flag can lead to faster race times, especially when yellow flags are more likely to occur.
 - **Key Points:**
-- **Conclusion:**
+  - The stochastic model outperforms the deterministic model in scenarios where yellow flags are more likely to occur.
+  - The stochastic model tends to delay pit stops to potentially benefit from yellow flags, while the deterministic model makes pit stops based on pre-determined optimal timing.
+  - The models can be applied to other motorsports and can be adapted to different functional forms for tire wear, fuel consumption, and lap time calculations.
+
 - **Future Research:**
+  - The models do not consider competition between drivers, which can significantly impact race strategy.
+  - The model simplifies yellow flags as Virtual Safety Car (VSC) events that occur between the start and end of laps.
+  - Incorporating driver competition and game theory aspects into the models.
+  - Expanding the model to account for different types of yellow flag events and their impact on race strategy.
 
 ## Paper 19
 
