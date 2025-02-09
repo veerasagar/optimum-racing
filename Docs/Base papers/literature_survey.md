@@ -356,14 +356,21 @@ Comparison with Real-World Strategies: The VSE's performance is compared to real
 
 ## Paper 19
 
-## Title:
+## Title: Optimizing Pit Stop Strategies with Competition in a Zero-Sum Feedback Stackelberg Game in Formula 1
 
 - **cite:**
 - **Year:**
-- **Summary:**
+- **Summary:** This paper presents a game theory model for optimizing pit stop strategies in Formula 1 races, considering competition between two drivers. The model is formulated as a zero-sum feedback Stackelberg game using dynamic programming, where each driver decides whether to pit or stay on track at each lap.
 - **Key Points:**
-- **Conclusion:**
-- **Future Research:**
+  - Competition: The model explicitly accounts for the interaction between drivers, including overtaking and defending positions, which affects their lap times.
+  - Uncertainty: The model incorporates stochastic events like yellow flags (Virtual Safety Car and Safety Car) and randomness in lap times.
+  - Tire Degradation: The model considers tire wear and the trade-off between using softer tires for faster lap times but shorter stints, and harder tires for longer stints but slower lap times.
+  - Objective Functions: The model allows for different objective functions, including maximizing the time gap with the opponent and maximizing the probability of winning.
+- **Conclusion:** The paper concludes by discussing potential extensions of the model, such as considering competition with more than two drivers and applying the model to other applications beyond Formula 1.
+- **Main Contribution:**
+  - Equilibrium Definition and Existence: The paper defines the feedback Stackelberg equilibrium and the Nash-feedback Stackelberg equilibrium, which include both pit stop strategies and initial tire compound decisions. The existence of these equilibria is proven.
+  - Algorithm for Finding Equilibrium: A backward induction algorithm with dynamic programming is proposed to find the game equilibrium.
+  - Numerical Results: The model is implemented and solved for instances with hundreds of millions of states. The results show that strategic decision-making significantly enhances players' race outcomes.
 
 ## Paper 20
 
