@@ -1,0 +1,8 @@
+fastf1
+pandas
+numpy
+scikit-learn
+tensorflow
+matplotlib
+openmeteo-requests
+dash
