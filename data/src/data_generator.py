@@ -29,31 +29,42 @@ def process_session(year, event, session_type, drivers=None):
     weather = session.weather_data
     track_status_df = session.track_status
 
+    # Define session start as the earliest lap time in the session
+    session_start_time = all_laps['Time'].min()
+
     # If no drivers are provided, use all drivers from the session.
     if drivers is None:
-        drivers = list(session.drivers.keys())
+        drivers = list(set(all_laps['DriverNumber'].astype(str)))
     else:
         # If a single driver is passed as a string, convert it to a list.
         if isinstance(drivers, str):
             drivers = [drivers]
 
     # Pre-calculate cumulative lap times for every driver (needed for gap calculations)
-    all_drivers = session.drivers  # Dictionary mapping driver numbers to driver names
-    cumulative_times = {driver: [] for driver in all_drivers}
-    for driver in all_drivers:
-        driver_laps = all_laps.pick_drivers(driver).sort_values(by='LapNumber')
+    unique_drivers = all_laps['DriverNumber'].unique()
+    cumulative_times = {str(driver): [] for driver in unique_drivers}
+    for driver in unique_drivers:
+        driver_laps = all_laps[all_laps['DriverNumber'] == driver].sort_values(by='LapNumber')
         cumulative = timedelta(0)
         for lap in driver_laps.itertuples():
             cumulative += lap.LapTime
-            cumulative_times[driver].append((lap.LapNumber, cumulative))
+            cumulative_times[str(driver)].append((lap.LapNumber, cumulative))
 
     # Process each requested driver
     for driver in drivers:
-        # Select laps for the current driver and merge with weather data
-        driver_laps = all_laps.pick_drivers(driver)
+        # Select laps for the current driver
+        driver_laps = all_laps[all_laps['DriverNumber'] == int(driver)]
+        if driver_laps.empty:
+            print(f"No laps found for driver {driver}. Skipping.")
+            continue
+
+        # Merge with weather data
         driver_laps = pd.merge_asof(driver_laps.sort_values("Time"),
                                     weather.sort_values("Time"),
                                     on="Time")
+        
+        # Get the driver name from the first lap data (e.g., driver's abbreviation)
+        driver_name = driver_laps.iloc[0]['Driver'].replace(" ", "_").lower()
 
         data = []
         for idx in range(len(driver_laps)):
@@ -64,7 +75,9 @@ def process_session(year, event, session_type, drivers=None):
             tyre_life = lap.TyreLife
             position = lap.Position
 
-            track_status = get_track_status(lap.Time, track_status_df)
+            # Calculate lap time relative to session start
+            lap_relative_time = lap.Time - session_start_time
+            track_status = get_track_status(lap_relative_time, track_status_df)
 
             sector1 = lap.Sector1Time.total_seconds()
             sector2 = lap.Sector2Time.total_seconds()
@@ -84,7 +97,7 @@ def process_session(year, event, session_type, drivers=None):
             personal_best = driver_laps['LapTime'][:idx+1].min().total_seconds()
 
             # Find cumulative time for this driver on the current lap
-            ver_cumulative = next((ct for ln, ct in cumulative_times[driver] if ln == lap_number), None)
+            ver_cumulative = next((ct for ln, ct in cumulative_times[str(driver)] if ln == lap_number), None)
             # Determine the fastest (leader's) cumulative time for this lap among all drivers
             leader_time = min([ct for times in cumulative_times.values() 
                                for (ln, ct) in times if ln == lap_number], default=None)
@@ -93,15 +106,15 @@ def process_session(year, event, session_type, drivers=None):
             # Determine gap to the driver immediately behind (if available)
             behind_drivers = []
             for d in cumulative_times:
-                if d == driver:
+                if d == str(driver):
                     continue
-                # Get the cumulative time for lap 'lap_number' for driver d
                 ct_value = next((ct for ln, ct in cumulative_times[d] if ln == lap_number), None)
                 if ct_value is not None:
-                    # Get that driver's position for this lap
-                    other_position = all_laps.pick_drivers(d).pick_laps(lap_number).iloc[0].Position
-                    if other_position == position + 1:
-                        behind_drivers.append(ct_value)
+                    other_laps = all_laps[(all_laps['DriverNumber'] == int(d)) & (all_laps['LapNumber'] == lap_number)]
+                    if not other_laps.empty:
+                        other_position = other_laps.iloc[0]['Position']
+                        if other_position == position + 1:
+                            behind_drivers.append(ct_value)
             gap_behind = (min(behind_drivers) - ver_cumulative).total_seconds() if behind_drivers else 0
 
             air_temp = lap.AirTemp
@@ -139,8 +152,6 @@ def process_session(year, event, session_type, drivers=None):
             })
 
         df = pd.DataFrame(data)
-        # Create a file name using the driver's name, event, and year.
-        driver_name = session.drivers[driver].replace(" ", "_").lower()
         file_name = f"{driver_name}_{event}_{year}_laps.csv"
         df.to_csv(file_name, index=False)
         print(f"Data saved to {file_name}")
