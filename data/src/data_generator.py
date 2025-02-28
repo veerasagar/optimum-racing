@@ -53,7 +53,7 @@ def process_session(year, event, session_type, drivers=None):
     # Process each requested driver
     for driver in drivers:
         # Select laps for the current driver
-        driver_laps = all_laps[all_laps['DriverNumber'] == int(driver)]
+        driver_laps = all_laps[all_laps['DriverNumber'] == driver]
         if driver_laps.empty:
             print(f"No laps found for driver {driver}. Skipping.")
             continue
