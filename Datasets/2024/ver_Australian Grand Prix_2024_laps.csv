@@ -1,0 +1,5 @@
+LapNumber,LapTime,PitStop,PitTime,Sector1Time,Sector2Time,Sector3Time,SpeedI1,SpeedI2,SpeedFL,SpeedST,PersonalBestTime,Compound,TyreLife,TrackStatus,Position,TimeGapToLeader,TimeGapToBehind,AirTemp,Humidity,Pressure,TrackTemp,WindDirection,WindSpeed
+1.0,87.458,False,0,,18.462,35.518,278.0,285.0,283.0,238.0,87.458,MEDIUM,1.0,1,1.0,0.0,0,20.4,45.0,1020.9,38.8,322,1.1
+2.0,84.099,False,0,29.623,18.375,36.101,273.0,297.0,298.0,281.0,84.099,MEDIUM,2.0,2,2.0,0.582,0,20.5,45.0,1020.8,39.0,88,0.9
+3.0,83.115,False,0,28.793,18.573,35.749,275.0,314.0,295.0,305.0,83.115,MEDIUM,3.0,2,2.0,0.691,0,20.6,44.0,1020.7,39.3,168,0.8
+4.0,,True,0,28.756,18.353,,270.0,308.0,,302.0,83.115,MEDIUM,4.0,2,19.0,,0,20.7,45.0,1020.7,39.1,163,1.6

@@ -6,7 +6,7 @@ from datetime import timedelta
 def get_track_status(lap_time, status_df):
     # Finds the track status corresponding to a lap time by checking where
     # lap_time falls between two successive status change times.
-    mask = ((status_df['Time'] <= lap_time) & 
+    mask = ((status_df['Time'] <= lap_time) &
             (lap_time < status_df['Time'].shift(-1).fillna(pd.Timedelta.max)))
     relevant_status = status_df[mask]
     if not relevant_status.empty:
@@ -62,7 +62,7 @@ def process_session(year, event, session_type, drivers=None):
         driver_laps = pd.merge_asof(driver_laps.sort_values("Time"),
                                     weather.sort_values("Time"),
                                     on="Time")
-        
+
         # Get the driver name from the first lap data (e.g., driver's abbreviation)
         driver_name = driver_laps.iloc[0]['Driver'].replace(" ", "_").lower()
 
@@ -99,7 +99,7 @@ def process_session(year, event, session_type, drivers=None):
             # Find cumulative time for this driver on the current lap
             ver_cumulative = next((ct for ln, ct in cumulative_times[str(driver)] if ln == lap_number), None)
             # Determine the fastest (leader's) cumulative time for this lap among all drivers
-            leader_time = min([ct for times in cumulative_times.values() 
+            leader_time = min([ct for times in cumulative_times.values()
                                for (ln, ct) in times if ln == lap_number], default=None)
             gap_leader = (ver_cumulative - leader_time).total_seconds() if leader_time is not None else 0
 
@@ -158,10 +158,15 @@ def process_session(year, event, session_type, drivers=None):
 
 # Example usage:
 if __name__ == "__main__":
-    # Define your parameters: year, event (circuit), session type,
-    # and driver(s) by their number (as strings). For multiple drivers, pass a list.
+    # Define your parameters: year, session type, and driver(s) by their number (as strings). For multiple drivers, pass a list.
     year = 2024
-    event = 'Monza'  # e.g., 'Monza' or any other event name supported by FastF1
     session_type = 'R'
-    drivers = ['1', '33', '44']  # Replace with the driver numbers you want to process
-    process_session(year, event, session_type, drivers)
+    drivers = ['1']  # Replace with the driver numbers you want to process
+
+    # Get the event schedule for the specified year
+    event_schedule = ff1.get_event_schedule(year)
+
+    # Iterate over each event in the schedule
+    for event_name in event_schedule['EventName']:
+        print(f"Processing event: {event_name}")
+        process_session(year, event_name, session_type, drivers)
