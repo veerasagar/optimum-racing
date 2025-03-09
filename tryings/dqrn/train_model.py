@@ -5,6 +5,8 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, LSTM
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, f1_score, precision_score, recall_score
+from sklearn.preprocessing import StandardScaler
+import pickle
 
 # Define the binary action space
 class RaceAction:
@@ -66,24 +68,29 @@ def load_dataset(filename):
     actions = actions[:-1]
     rewards = rewards[:-1]
     dones = dones[:-1]
-    next_states = next_states
+    # next_states remains as is
 
-    return states, actions, rewards, next_states, dones
+    # Scale the states and next_states using StandardScaler
+    scaler = StandardScaler()
+    states = scaler.fit_transform(states)
+    next_states = scaler.transform(next_states)
+
+    return states, actions, rewards, next_states, dones, scaler
 
 # Train and evaluate the DRQN model
 def train_drqn_model(filename, episodes=10, gamma=0.99, batch_size=32):
-    states, actions, rewards, next_states, dones = load_dataset(filename)
+    states, actions, rewards, next_states, dones, scaler = load_dataset(filename)
     
     input_shape = (1, states.shape[1])
     action_space_size = len(RaceAction.get_action_space())
     model = build_drqn_model(input_shape, action_space_size)
     
-    # Split dataset
+    # Split dataset into training and validation sets
     X_train, X_val, a_train, a_val, r_train, r_val, ns_train, ns_val, d_train, d_val = train_test_split(
         states, actions, rewards, next_states, dones, test_size=0.2, random_state=42
     )
     
-    # Reshape for LSTM
+    # Reshape for LSTM input: (batch_size, timesteps, features)
     X_train = X_train.reshape(-1, 1, states.shape[1])
     X_val = X_val.reshape(-1, 1, states.shape[1])
     ns_train = ns_train.reshape(-1, 1, states.shape[1])
@@ -124,7 +131,7 @@ def train_drqn_model(filename, episodes=10, gamma=0.99, batch_size=32):
         val_loss = model.evaluate(X_val, np.zeros((len(X_val), action_space_size)), verbose=0)
         print(f"Validation Loss: {val_loss}")
 
-    # Final evaluation
+    # Final evaluation on validation set
     print("\nFinal Evaluation on Validation Set:")
     val_q_values = model.predict(X_val, verbose=0)
     predicted_actions = np.argmax(val_q_values, axis=1)
@@ -149,6 +156,11 @@ def train_drqn_model(filename, episodes=10, gamma=0.99, batch_size=32):
 
     model.save("drqn_race_strategy_model.h5")
     print("\nModel saved to drqn_race_strategy_model.h5")
+    
+    # Save the scaler to scaler.pkl for later inference
+    with open("scaler.pkl", "wb") as f:
+        pickle.dump(scaler, f)
+    print("Scaler saved to scaler.pkl")
 
 # Example usage
 filename = "ver_Monza_2024_laps.csv"  # Replace with your CSV path
