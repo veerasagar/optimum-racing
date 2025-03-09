@@ -152,14 +152,14 @@ def process_session(year, event, session_type, drivers=None):
             })
 
         df = pd.DataFrame(data)
-        file_name = f"{driver_name}_{event}_{year}_laps.csv"
+        file_name = f"./Datasets/{year}/{driver_name}_{event}_{year}_laps.csv"
         df.to_csv(file_name, index=False)
         print(f"Data saved to {file_name}")
 
 # Example usage:
 if __name__ == "__main__":
     # Define your parameters: year, session type, and driver(s) by their number (as strings). For multiple drivers, pass a list.
-    year = 2024
+    year = 2023
     session_type = 'R'
     drivers = ['1']  # Replace with the driver numbers you want to process
 
