@@ -35,7 +35,7 @@ Basic_code/
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
-*.h5
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
