@@ -63,7 +63,7 @@ def predict_next_race_action(telemetry):
 # Example usage for a single lap's telemetry
 if __name__ == '__main__':
     example_telemetry = {
-        "LapNumber": 55.0,
+        "LapNumber": 40.0,
         "Sector1Time": 27.5,
         "Sector2Time": 28.7,
         "Sector3Time": 27.3,
