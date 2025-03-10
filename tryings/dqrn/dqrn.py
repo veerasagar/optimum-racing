@@ -6,6 +6,10 @@ from tensorflow.keras.layers import Dense, LSTM
 from collections import deque
 import random
 
+# -----------------------------
+# State and Action Definitions
+# -----------------------------
+
 # Extended compound encoding for multiple compounds
 compound_mapping = {
     "HARD": 0,
@@ -14,7 +18,10 @@ compound_mapping = {
     # Add more mappings as needed
 }
 
-# Define the state representation using selected CSV columns, with basic missing value handling
+# State representation: select relevant features from the dataset.
+# Here we include: LapNumber, Sector1Time, Sector2Time, Sector3Time, TyreLife,
+# Compound, Position, TimeGapToLeader, TimeGapToBehind, AirTemp, TrackTemp,
+# SpeedI1, SpeedI2.
 class RaceState:
     def __init__(self, row):
         self.lap_number = row["LapNumber"] if pd.notna(row["LapNumber"]) else 0.0
@@ -29,16 +36,19 @@ class RaceState:
         self.time_gap_behind = row["TimeGapToBehind"] if pd.notna(row["TimeGapToBehind"]) else 0.0
         self.air_temp = row["AirTemp"] if pd.notna(row["AirTemp"]) else 0.0
         self.track_temp = row["TrackTemp"] if pd.notna(row["TrackTemp"]) else 0.0
+        self.speed_i1 = row["SpeedI1"] if pd.notna(row["SpeedI1"]) else 0.0
+        self.speed_i2 = row["SpeedI2"] if pd.notna(row["SpeedI2"]) else 0.0
 
     def to_array(self):
         return np.array([
             self.lap_number, self.sector1, self.sector2, self.sector3,
             self.tyre_life, self.compound, self.position,
             self.time_gap_leader, self.time_gap_behind,
-            self.air_temp, self.track_temp
+            self.air_temp, self.track_temp,
+            self.speed_i1, self.speed_i2
         ], dtype=np.float32)
 
-# Define a simple binary action space: NO_PIT and PIT_STOP
+# Define a simple binary action space: NO_PIT and PIT_STOP.
 class RaceAction:
     NO_PIT = 0
     PIT_STOP = 1
@@ -47,7 +57,12 @@ class RaceAction:
     def get_action_space():
         return [RaceAction.NO_PIT, RaceAction.PIT_STOP]
 
-# Define the environment that steps through the CSV lap data
+# -----------------------------
+# Environment Definitions
+# -----------------------------
+
+# Base environment for the race dataset.
+# Each row of the CSV represents one lap.
 class RaceEnvironment:
     def __init__(self, filename):
         self.data = pd.read_csv(filename)
@@ -64,13 +79,10 @@ class RaceEnvironment:
         row = self.data.iloc[self.current_index]
         lap_time = row["LapTime"]
         pit_time = row["PitTime"] if pd.notna(row["PitTime"]) else 0.0
-        # Apply pit penalty if PIT_STOP is chosen
+        # If a pit stop is taken, add pit penalty to lap time.
         effective_lap_time = lap_time + pit_time if action == RaceAction.PIT_STOP else lap_time
-        
-        # Modified reward: Higher reward for lower lap times.
-        # Assuming a constant offset (e.g., 120) to yield positive rewards.
+        # Modified reward: higher reward for lower lap times.
         reward = 120 - effective_lap_time
-
         self.current_index += 1
         done = (self.current_index >= self.total_laps)
         if not done:
@@ -79,16 +91,49 @@ class RaceEnvironment:
             self.state = None
         return self.state, reward, done
 
-# Build the DRQN model with an LSTM and dense layers
-def build_drqn_model(input_shape, action_space_size):
+# DRQN benefits from sequence information.
+# This wrapper collects a fixed-length sequence of states.
+class RaceEnvironmentSeq:
+    def __init__(self, env, seq_length=5):
+        self.env = env
+        self.seq_length = seq_length
+        self.state_seq = deque(maxlen=seq_length)
+
+    def reset(self):
+        state = self.env.reset()
+        # Fill the sequence with the initial state repeated.
+        self.state_seq = deque([state for _ in range(self.seq_length)], maxlen=self.seq_length)
+        return self.get_state_seq()
+
+    def step(self, action):
+        next_state, reward, done = self.env.step(action)
+        self.state_seq.append(next_state)
+        return self.get_state_seq(), reward, done
+
+    def get_state_seq(self):
+        # Convert the sequence of RaceState objects to a numpy array.
+        # If a state is None (episode finished), fill with zeros.
+        seq = [
+            s.to_array() if s is not None 
+            else np.zeros_like(self.state_seq[0].to_array())
+            for s in self.state_seq
+        ]
+        return np.array(seq, dtype=np.float32)
+
+# -----------------------------
+# DRQN Model and Training
+# -----------------------------
+
+# Build the DRQN model using an LSTM to process the sequence.
+def build_drqn_model(seq_length, feature_size, action_space_size):
     model = Sequential()
-    model.add(LSTM(64, input_shape=input_shape, return_sequences=False))
+    model.add(LSTM(64, input_shape=(seq_length, feature_size), return_sequences=False))
     model.add(Dense(64, activation='relu'))
     model.add(Dense(action_space_size, activation='linear'))
     model.compile(optimizer='adam', loss='mse')
     return model
 
-# Replay Buffer for experience replay
+# Replay Buffer stores experience tuples: (state_seq, action, reward, next_state_seq, done).
 class ReplayBuffer:
     def __init__(self, capacity):
         self.buffer = deque(maxlen=capacity)
@@ -102,73 +147,78 @@ class ReplayBuffer:
     def __len__(self):
         return len(self.buffer)
 
-# Training loop with improvements: replay buffer, batch updates, and target network
-def train_rsrl_model(env, episodes, gamma, epsilon, epsilon_decay, min_epsilon,
-                     batch_size=32, replay_capacity=1000, target_update_freq=5):
-    sample_state = env.reset().to_array()
-    feature_size = sample_state.size
-    input_shape = (1, feature_size)  # (timesteps, features)
-    action_space_size = len(RaceAction.get_action_space())
-    
-    # Build the main and target networks
-    model = build_drqn_model(input_shape, action_space_size)
-    target_model = build_drqn_model(input_shape, action_space_size)
+# Training loop for DRQN with sequences, replay buffer, and a target network.
+def train_drqn(env_seq, episodes, gamma, epsilon, epsilon_decay, min_epsilon,
+               batch_size=32, replay_capacity=1000, target_update_freq=5):
+    # Get state shape from an initial sequence.
+    initial_seq = env_seq.reset()
+    seq_length, feature_size = initial_seq.shape
+    action_space = RaceAction.get_action_space()
+    action_space_size = len(action_space)
+
+    # Build the main and target networks.
+    model = build_drqn_model(seq_length, feature_size, action_space_size)
+    target_model = build_drqn_model(seq_length, feature_size, action_space_size)
     target_model.set_weights(model.get_weights())
 
     replay_buffer = ReplayBuffer(replay_capacity)
 
     for episode in range(episodes):
-        state = env.reset()
+        state_seq = env_seq.reset()  # Shape: (seq_length, feature_size)
         total_reward = 0
         done = False
 
         while not done:
-            state_arr = state.to_array().reshape(1, 1, -1)
-            # Epsilon-greedy action selection
+            state_input = state_seq.reshape(1, seq_length, feature_size)
+            # Epsilon-greedy action selection.
             if np.random.rand() < epsilon:
-                action = np.random.choice(RaceAction.get_action_space())
+                action = np.random.choice(action_space)
             else:
-                q_vals = model.predict(state_arr, verbose=0)
-                action = np.argmax(q_vals[0])
-            next_state, reward, done = env.step(action)
+                q_values = model.predict(state_input, verbose=0)
+                action = np.argmax(q_values[0])
+            next_state_seq, reward, done = env_seq.step(action)
             total_reward += reward
 
-            # Store experience in replay buffer
-            replay_buffer.add((state, action, reward, next_state, done))
-            state = next_state
+            # Store experience.
+            replay_buffer.add((state_seq, action, reward, next_state_seq, done))
+            state_seq = next_state_seq
 
-            # Perform a batch update if enough experiences are available
+            # Batch update when enough samples are available.
             if len(replay_buffer) >= batch_size:
                 batch = replay_buffer.sample(batch_size)
-                state_batch = np.array([s.to_array().reshape(1, -1) for s, a, r, s_next, done_flag in batch])
-                state_batch = state_batch.reshape(batch_size, 1, feature_size)
+                state_batch = np.array([exp[0] for exp in batch])
                 target_batch = model.predict(state_batch, verbose=0)
 
-                # Update target for each sample in the mini-batch
-                for i, (s, a, r, s_next, done_flag) in enumerate(batch):
-                    if done_flag or s_next is None:
+                for i, (s_seq, a, r, s_next_seq, d) in enumerate(batch):
+                    if d:
                         target_batch[i][a] = r
                     else:
-                        s_next_arr = s_next.to_array().reshape(1, 1, -1)
-                        t = target_model.predict(s_next_arr, verbose=0)
+                        next_input = s_next_seq.reshape(1, seq_length, feature_size)
+                        t = target_model.predict(next_input, verbose=0)
                         target_batch[i][a] = r + gamma * np.amax(t[0])
                 model.fit(state_batch, target_batch, epochs=1, verbose=0)
 
         epsilon = max(min_epsilon, epsilon * epsilon_decay)
-        print(f"Episode {episode + 1}/{episodes}, Total Reward: {total_reward}")
+        print(f"Episode {episode+1}/{episodes}, Total Reward: {total_reward}")
 
-        # Update target network weights every few episodes
-        if (episode + 1) % target_update_freq == 0:
+        # Update target network weights periodically.
+        if (episode+1) % target_update_freq == 0:
             target_model.set_weights(model.get_weights())
 
-# Example usage:
-# Make sure that "ver_Monza_2024_laps.csv" is available in your working directory.
-filename = "ver_Monza_2024_laps.csv"
-env = RaceEnvironment(filename)
-episodes = 10
-gamma = 0.99
-epsilon = 1.0
-epsilon_decay = 0.995
-min_epsilon = 0.01
+# -----------------------------
+# Main Execution
+# -----------------------------
+if __name__ == "__main__":
+    filename = "ver_Monza_2024_laps.csv"  # Ensure this CSV is in your working directory.
+    base_env = RaceEnvironment(filename)
+    seq_length = 5  # Define the length of the state sequence for the LSTM.
+    env_seq = RaceEnvironmentSeq(base_env, seq_length=seq_length)
 
-train_rsrl_model(env, episodes, gamma, epsilon, epsilon_decay, min_epsilon)
+    # Hyperparameters for training.
+    episodes = 2
+    gamma = 0.99
+    epsilon = 1.0
+    epsilon_decay = 0.995
+    min_epsilon = 0.01
+
+    train_drqn(env_seq, episodes, gamma, epsilon, epsilon_decay, min_epsilon)
