@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 import pickle
 import matplotlib.pyplot as plt
 
-# Define the binary action space
+# Define the binary action space.
 class RaceAction:
     NO_PIT = 0
     PIT_STOP = 1
@@ -18,7 +18,7 @@ class RaceAction:
     def get_action_space():
         return [RaceAction.NO_PIT, RaceAction.PIT_STOP]
 
-# Build the DRQN model
+# Build the DRQN model.
 def build_drqn_model(input_shape, action_space_size):
     model = Sequential()
     model.add(LSTM(64, input_shape=input_shape, return_sequences=False))
@@ -27,7 +27,7 @@ def build_drqn_model(input_shape, action_space_size):
     model.compile(optimizer='adam', loss='mse')
     return model
 
-# Load and preprocess the dataset from CSV
+# Load and preprocess the dataset from CSV.
 def load_dataset(filename):
     df = pd.read_csv(filename)
     
@@ -145,7 +145,7 @@ def train_drqn_model(filename, episodes=10, gamma=0.99, batch_size=32):
     
     return model, scaler, lap_numbers, df
 
-# Visualize results using matplotlib in separate windows.
+# Visualize results using matplotlib in separate windows and print pit stop statements.
 def visualize_results(model, scaler, df):
     # Recreate state vectors from CSV data.
     states = []
@@ -180,10 +180,21 @@ def visualize_results(model, scaler, df):
     # Convert the actual PitStop column to a numeric flag.
     df_vis["ActualPitStop"] = df_vis["PitStop"].apply(lambda x: 1 if str(x).strip().lower() == "true" else 0)
     
+    # --- Print Actual Pit Stop Statements ---
+    actual_pit = df_vis[df_vis["ActualPitStop"] == 1]
+    print("\nActual Pit Stops:")
+    for idx, row in actual_pit.iterrows():
+        print(f"Lap {row['LapNumber']}: Lap Time = {row['LapTime']} sec, Compound = {row['Compound']}")
+    
+    # --- Print Predicted Pit Stop Statements ---
+    predicted_pit = df_vis[df_vis["PredictedAction"] == RaceAction.PIT_STOP]
+    print("\nPredicted Pit Stops:")
+    for idx, row in predicted_pit.iterrows():
+        print(f"Lap {row['LapNumber']}: Lap Time = {row['LapTime']} sec, Compound = {row['Compound']}")
+    
     # --- Figure 1: Actual Race Lap Times with Actual Pit Stops ---
     plt.figure(figsize=(10, 6))
     plt.plot(df_vis["LapNumber"], df_vis["LapTime"], label="Lap Time", color="blue", linestyle="-", marker="o")
-    actual_pit = df_vis[df_vis["ActualPitStop"] == 1]
     plt.scatter(actual_pit["LapNumber"], actual_pit["LapTime"], color="red", s=100, label="Actual Pit Stop")
     plt.title("Actual Race Lap Times with Actual Pit Stops")
     plt.xlabel("Lap Number")
@@ -194,7 +205,6 @@ def visualize_results(model, scaler, df):
     # --- Figure 2: Race Lap Times with Predicted Pit Stops ---
     plt.figure(figsize=(10, 6))
     plt.plot(df_vis["LapNumber"], df_vis["LapTime"], label="Lap Time", color="blue", linestyle="-", marker="o")
-    predicted_pit = df_vis[df_vis["PredictedAction"] == RaceAction.PIT_STOP]
     plt.scatter(predicted_pit["LapNumber"], predicted_pit["LapTime"], color="green", s=100, label="Predicted Pit Stop")
     plt.title("Race Lap Times with Predicted Pit Stops")
     plt.xlabel("Lap Number")
@@ -205,7 +215,7 @@ def visualize_results(model, scaler, df):
     # Display the graphs in separate windows.
     plt.show()
 
-# Main execution
+# Main execution.
 if __name__ == '__main__':
     filename = "ver_Monza_2024_laps.csv"  # Replace with your CSV file path.
     episodes = 10
