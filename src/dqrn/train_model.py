@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, f1_score, precision_score, recall_score
 from sklearn.preprocessing import StandardScaler
 import pickle
-import plotly.express as px
+import matplotlib.pyplot as plt
 
 # Define the binary action space
 class RaceAction:
@@ -56,12 +56,11 @@ def load_dataset(filename):
         ], dtype=np.float32)
         states.append(state)
         lap_numbers.append(row["LapNumber"])
-        # Convert PitStop column to action: if "true" then 1 (pit stop), else 0.
+        # Convert PitStop column to action: "true" means pit stop (1), else 0.
         act = 1 if str(row["PitStop"]).strip().lower() == "true" else 0
         actions.append(act)
         pit_time = row["PitTime"] if pd.notna(row["PitTime"]) else 0.0
         effective_lap_time = row["LapTime"] + pit_time
-        # Higher reward for lower lap times.
         rewards.append(120 - effective_lap_time)
         
     states = np.array(states)
@@ -73,33 +72,33 @@ def load_dataset(filename):
     dones = np.zeros(len(states))
     dones[-1] = 1  # Mark the last sample as terminal.
     
-    # Align current states with next_states.
+    # Align states with next_states.
     states = states[:-1]
     actions = actions[:-1]
     rewards = rewards[:-1]
     dones = dones[:-1]
     lap_numbers = lap_numbers[:-1]
 
-    # Scale the states and next_states.
+    # Scale states and next_states.
     scaler = StandardScaler()
     states = scaler.fit_transform(states)
     next_states = scaler.transform(next_states)
 
     return states, actions, rewards, next_states, dones, scaler, lap_numbers, df
 
-# Train the DRQN model
+# Train the DRQN model using Q-learning update rules.
 def train_drqn_model(filename, episodes=10, gamma=0.99, batch_size=32):
     states, actions, rewards, next_states, dones, scaler, lap_numbers, df = load_dataset(filename)
-    input_shape = (1, states.shape[1])  # LSTM expects (timesteps, features)
+    input_shape = (1, states.shape[1])  # LSTM expects 3D input: (timesteps, features)
     action_space_size = len(RaceAction.get_action_space())
     model = build_drqn_model(input_shape, action_space_size)
     
-    # Split the data into training and validation sets.
+    # Split the dataset into training and validation sets.
     X_train, X_val, a_train, a_val, r_train, r_val, ns_train, ns_val, d_train, d_val = train_test_split(
         states, actions, rewards, next_states, dones, test_size=0.2, random_state=42
     )
     
-    # Reshape for LSTM: (batch_size, timesteps, features)
+    # Reshape for LSTM input.
     X_train = X_train.reshape(-1, 1, states.shape[1])
     X_val = X_val.reshape(-1, 1, states.shape[1])
     ns_train = ns_train.reshape(-1, 1, states.shape[1])
@@ -132,43 +131,23 @@ def train_drqn_model(filename, episodes=10, gamma=0.99, batch_size=32):
                     targets[j][act] = batch_rewards[j]
                 else:
                     targets[j][act] = batch_rewards[j] + gamma * np.max(next_q_values[j])
-            
             model.fit(batch_states, targets, epochs=1, verbose=0)
         
         val_loss = model.evaluate(X_val, np.zeros((len(X_val), action_space_size)), verbose=0)
         print(f"Validation Loss: {val_loss}")
-
-    # Final evaluation on the validation set.
-    val_q_values = model.predict(X_val, verbose=0)
-    predicted_actions_val = np.argmax(val_q_values, axis=1)
-    accuracy = accuracy_score(a_val, predicted_actions_val)
-    f1 = f1_score(a_val, predicted_actions_val)
-    precision = precision_score(a_val, predicted_actions_val)
-    recall = recall_score(a_val, predicted_actions_val)
-    conf_matrix = confusion_matrix(a_val, predicted_actions_val)
     
-    print("\nFinal Evaluation on Validation Set:")
-    print(f"Accuracy: {accuracy}")
-    print(f"F1 Score: {f1}")
-    print(f"Precision: {precision}")
-    print(f"Recall: {recall}")
-    print("Confusion Matrix:")
-    print(conf_matrix)
-    print("\nClassification Report:")
-    print(classification_report(a_val, predicted_actions_val, target_names=['NO_PIT', 'PIT_STOP']))
-    
-    # Save the model and scaler.
+    # Save the trained model and scaler.
     model.save("drqn_race_strategy_model.h5")
-    print("\nModel saved to drqn_race_strategy_model.h5")
+    print("Model saved to drqn_race_strategy_model.h5")
     with open("scaler.pkl", "wb") as f:
         pickle.dump(scaler, f)
     print("Scaler saved to scaler.pkl")
     
     return model, scaler, lap_numbers, df
 
-# Create visualizations: actual race data and predicted pit stops.
+# Visualize results using matplotlib in separate windows.
 def visualize_results(model, scaler, df):
-    # Prepare state vectors from CSV data.
+    # Recreate state vectors from CSV data.
     states = []
     for i in range(len(df) - 1):
         row = df.iloc[i]
@@ -195,35 +174,36 @@ def visualize_results(model, scaler, df):
     q_values = model.predict(states_reshaped, verbose=0)
     predicted_actions = np.argmax(q_values, axis=1)
     
-    # Create a DataFrame for visualization (ensure alignment with predictions).
+    # Create a DataFrame for visualization (ensuring alignment with predictions).
     df_vis = df.iloc[:len(predicted_actions)].copy()
     df_vis["PredictedAction"] = predicted_actions
-    
-    # Graph 1: Actual Lap Times with Actual Pit Stops
-    # Convert PitStop column to numeric flag: 1 if true.
+    # Convert the actual PitStop column to a numeric flag.
     df_vis["ActualPitStop"] = df_vis["PitStop"].apply(lambda x: 1 if str(x).strip().lower() == "true" else 0)
-    fig_actual = px.line(df_vis, x="LapNumber", y="LapTime",
-                         title="Actual Race Lap Times with Actual Pit Stops",
-                         labels={"LapTime": "Lap Time (seconds)"})
-    actual_pit_df = df_vis[df_vis["ActualPitStop"] == 1]
-    fig_actual.add_scatter(x=actual_pit_df["LapNumber"], y=actual_pit_df["LapTime"],
-                           mode="markers",
-                           marker=dict(color="red", size=10),
-                           name="Actual Pit Stop")
     
-    # Graph 2: Predicted Lap Times with Predicted Pit Stops
-    fig_predicted = px.line(df_vis, x="LapNumber", y="LapTime",
-                            title="Race Lap Times with Predicted Pit Stops",
-                            labels={"LapTime": "Lap Time (seconds)"})
-    predicted_pit_df = df_vis[df_vis["PredictedAction"] == RaceAction.PIT_STOP]
-    fig_predicted.add_scatter(x=predicted_pit_df["LapNumber"], y=predicted_pit_df["LapTime"],
-                              mode="markers",
-                              marker=dict(color="green", size=10),
-                              name="Predicted Pit Stop")
+    # --- Figure 1: Actual Race Lap Times with Actual Pit Stops ---
+    plt.figure(figsize=(10, 6))
+    plt.plot(df_vis["LapNumber"], df_vis["LapTime"], label="Lap Time", color="blue", linestyle="-", marker="o")
+    actual_pit = df_vis[df_vis["ActualPitStop"] == 1]
+    plt.scatter(actual_pit["LapNumber"], actual_pit["LapTime"], color="red", s=100, label="Actual Pit Stop")
+    plt.title("Actual Race Lap Times with Actual Pit Stops")
+    plt.xlabel("Lap Number")
+    plt.ylabel("Lap Time (seconds)")
+    plt.legend()
+    plt.grid(True)
     
-    # Show both figures.
-    fig_actual.show()
-    fig_predicted.show()
+    # --- Figure 2: Race Lap Times with Predicted Pit Stops ---
+    plt.figure(figsize=(10, 6))
+    plt.plot(df_vis["LapNumber"], df_vis["LapTime"], label="Lap Time", color="blue", linestyle="-", marker="o")
+    predicted_pit = df_vis[df_vis["PredictedAction"] == RaceAction.PIT_STOP]
+    plt.scatter(predicted_pit["LapNumber"], predicted_pit["LapTime"], color="green", s=100, label="Predicted Pit Stop")
+    plt.title("Race Lap Times with Predicted Pit Stops")
+    plt.xlabel("Lap Number")
+    plt.ylabel("Lap Time (seconds)")
+    plt.legend()
+    plt.grid(True)
+    
+    # Display the graphs in separate windows.
+    plt.show()
 
 # Main execution
 if __name__ == '__main__':
