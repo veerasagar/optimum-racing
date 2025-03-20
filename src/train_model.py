@@ -135,6 +135,16 @@ def train_drqn_model(filename, episodes=10, gamma=0.99, batch_size=32):
         
         val_loss = model.evaluate(X_val, np.zeros((len(X_val), action_space_size)), verbose=0)
         print(f"Validation Loss: {val_loss}")
+
+    val_q_values = model.predict(X_val, verbose=0)
+    predicted_actions_val = np.argmax(val_q_values, axis=1)
+    accuracy = accuracy_score(a_val, predicted_actions_val)
+    conf_matrix = confusion_matrix(a_val, predicted_actions_val)
+
+    print("\nFinal Evaluation on Validation Set:")
+    print(f"Accuracy: {accuracy}")
+    print("Confusion Matrix:")
+    print(conf_matrix)
     
     # Save the trained model and scaler.
     model.save("drqn_race_strategy_model.h5")
