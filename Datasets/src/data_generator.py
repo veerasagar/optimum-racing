@@ -159,9 +159,9 @@ def process_session(year, event, session_type, drivers=None):
 # Example usage:
 if __name__ == "__main__":
     # Define your parameters: year, session type, and driver(s) by their number (as strings). For multiple drivers, pass a list.
-    year = 2022
+    year = 2021
     session_type = 'R'
-    drivers = ['1']  # Replace with the driver numbers you want to process
+    drivers = ['33']  # Replace with the driver numbers you want to process
 
     # Get the event schedule for the specified year
     event_schedule = ff1.get_event_schedule(year)

@@ -1,0 +1,2 @@
+LapNumber,LapTime,PitStop,PitTime,Sector1Time,Sector2Time,Sector3Time,SpeedI1,SpeedI2,SpeedFL,SpeedST,PersonalBestTime,Compound,TyreLife,TrackStatus,Position,TimeGapToLeader,TimeGapToBehind,AirTemp,Humidity,Pressure,TrackTemp,WindDirection,WindSpeed
+1.0,,False,0,,,,,,,,,MEDIUM,1.0,,,,0,29.0,37.9,1007.4,51.8,183,0.6
