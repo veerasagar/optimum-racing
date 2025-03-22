@@ -203,7 +203,7 @@ def train_drqn(env_seq, episodes, gamma, epsilon, epsilon_decay, min_epsilon,
 
 
 if __name__ == "__main__":
-    folders = ["Datasets/2021", "Datasets/2022", "Datasets/2023"]
+    folders = ["../Datasets/2021", "../Datasets/2022", "../Datasets/2023"]
     
     # Initialize the DRQN model outside the loop (so training accumulates)
     # First, load one file to determine state dimensions.
