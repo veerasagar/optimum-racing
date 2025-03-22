@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+drqn_race_strategy_model_offline.h5
+drqn_race_strategy_model.h5
+scaler.pkl
 # C extensions
 *.so
 
