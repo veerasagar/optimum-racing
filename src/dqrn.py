@@ -5,23 +5,18 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, LSTM
 from collections import deque
 import random
+import os
+import glob
 
-# -----------------------------
-# State and Action Definitions
-# -----------------------------
+def get_csv_files(folder_path):
+    return glob.glob(os.path.join(folder_path, "*.csv"))
 
-# Extended compound encoding for multiple compounds
 compound_mapping = {
     "HARD": 0,
     "MEDIUM": 1,
     "SOFT": 2,
-    # Add more mappings as needed
 }
 
-# State representation: select relevant features from the dataset.
-# Here we include: LapNumber, Sector1Time, Sector2Time, Sector3Time, TyreLife,
-# Compound, Position, TimeGapToLeader, TimeGapToBehind, AirTemp, TrackTemp,
-# SpeedI1, SpeedI2.
 class RaceState:
     def __init__(self, row):
         self.lap_number = row["LapNumber"] if pd.notna(row["LapNumber"]) else 0.0
@@ -205,20 +200,39 @@ def train_drqn(env_seq, episodes, gamma, epsilon, epsilon_decay, min_epsilon,
         if (episode+1) % target_update_freq == 0:
             target_model.set_weights(model.get_weights())
 
-# -----------------------------
-# Main Execution
-# -----------------------------
-if __name__ == "__main__":
-    filename = "ver_Monza_2024_laps.csv"  # Ensure this CSV is in your working directory.
-    base_env = RaceEnvironment(filename)
-    seq_length = 5  # Define the length of the state sequence for the LSTM.
-    env_seq = RaceEnvironmentSeq(base_env, seq_length=seq_length)
 
-    # Hyperparameters for training.
+
+if __name__ == "__main__":
+    folders = ["Datasets/2021", "Datasets/2022", "Datasets/2023"]
+    
+    # Initialize the DRQN model outside the loop (so training accumulates)
+    # First, load one file to determine state dimensions.
+    initial_file = glob.glob(os.path.join(folders[0], "*.csv"))[0]
+    base_env = RaceEnvironment(initial_file)
+    seq_length = 5
+    env_seq = RaceEnvironmentSeq(base_env, seq_length=seq_length)
+    initial_seq = env_seq.reset()
+    seq_length, feature_size = initial_seq.shape
+    action_space_size = len(RaceAction.get_action_space())
+    model = build_drqn_model(seq_length, feature_size, action_space_size)
+    
+    # You may also create a target model and replay buffer if training incrementally.
+    
+    # Define hyperparameters.
     episodes = 2
     gamma = 0.99
     epsilon = 1.0
     epsilon_decay = 0.995
     min_epsilon = 0.01
+    
+    for folder in folders:
+        csv_files = get_csv_files(folder)
+        for csv_file in csv_files:
+            print(f"Training on file: {csv_file}")
+            base_env = RaceEnvironment(csv_file)
+            env_seq = RaceEnvironmentSeq(base_env, seq_length=seq_length)
+            train_drqn(env_seq, episodes, gamma, epsilon, epsilon_decay, min_epsilon)
 
-    train_drqn(env_seq, episodes, gamma, epsilon, epsilon_decay, min_epsilon)
+    
+    model.save("drqn_race_strategy_model.h5")
+    print("Model saved to drqn_race_strategy_model.h5")
