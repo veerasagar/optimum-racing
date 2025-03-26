@@ -1,0 +1,100 @@
+[[package]]
+name = "numpy"
+version = "1.23.5"
+description = "Fundamental package for array computing with Python"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "pandas"
+version = "1.5.3"
+description = "Data analysis and manipulation tool"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "scikit-learn"
+version = "1.2.2"
+description = "Machine Learning in Python"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "matplotlib"
+version = "3.6.3"
+description = "Python plotting library"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "seaborn"
+version = "0.12.2"
+description = "Statistical data visualization"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "tensorflow"
+version = "2.10.0"
+description = "An end-to-end open source machine learning platform"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "keras"
+version = "2.10.0"
+description = "Deep Learning for humans"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "torch"
+version = "1.13.1"
+description = "Tensors and dynamic neural networks in Python with strong GPU acceleration"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "torchvision"
+version = "0.14.1"
+description = "Datasets, transforms and models specific to computer vision"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "fastai"
+version = "2.7.10"
+description = "High-level deep learning library for PyTorch"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "xgboost"
+version = "1.7.6"
+description = "Scalable, Portable and Distributed Gradient Boosting Library"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "fastf1"
+version = "1.8.0"
+description = "A library to access F1 timing and session data"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[metadata]
+lock-version = "1.1"
+python-versions = ">=3.8"
+content-hash = "samplehashvalue"
