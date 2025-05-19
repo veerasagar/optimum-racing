@@ -8,7 +8,7 @@ This project implements a Deep Recurrent Q-Network (DRQN) for optimizing race st
   - An LSTM layer to handle sequential input data.
   - Fully connected layers that process the hidden state output of the LSTM to produce Q-values for each available action.
 
-## To run
+### To run
 
 ```python
 cd src
